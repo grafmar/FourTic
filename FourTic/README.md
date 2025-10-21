@@ -48,3 +48,8 @@ This project is licensed under the MIT License. See the LICENSE file for more de
 
 - Pygame for the game development framework.
 - Inspiration from classic Connect Four gameplay.
+
+
+## Play on
+
+https://grafmar.github.io/FourTic/FourTic/src/build/web/
