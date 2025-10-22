@@ -1,5 +1,5 @@
 
-<svg width="400" height="400" xmlns="http://www.w3.org/2000/svg">
+<svg width="350" height="350" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <pattern id="patt1" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
       <rect width="20" height="20" x="0" y="00" style="fill:white;stroke-width:3;stroke:black" />
