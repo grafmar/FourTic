@@ -64,6 +64,7 @@ def draw_board(size):
         screen.fill(WIN_BG_O)
     else:
         screen.fill(WHITE)
+
     font = create_font(size)
     for w in range(DIM):
         for z in range(DIM):
@@ -89,35 +90,63 @@ def draw_board(size):
                         color = RED if mark == "X" else BLUE
                         text = font.render(mark, True, color)
                         screen.blit(text, text.get_rect(center=rect.center))
+
+    msg_font = pygame.font.SysFont(None, max(24, size + 6))
     if winner_player:
-        msg_font = pygame.font.SysFont(None, max(24, size + 6))
-        msg = msg_font.render(f"Player {winner_player} has won!", True, BLACK)
-        screen.blit(msg, msg.get_rect(center=(WIDTH // 2, HEIGHT - 75)))
+        msg = msg_font.render(f"Player {winner_player} has won!", True, RED if current_player == "X" else BLUE)
+    else:
+        msg = msg_font.render(f"Next move: {current_player}", True, RED if current_player == "X" else BLUE)
+    screen.blit(msg, msg.get_rect(center=(WIDTH // 2, HEIGHT - 75)))
+
     return draw_button("Restart Game", HEIGHT - 50)
 
 def check_winner():
     global winner_line
-    dirs = [(1,0,0,0),(0,1,0,0),(0,0,1,0),(0,0,0,1),
-            (1,1,0,0),(1,0,1,0),(1,0,0,1),(0,1,1,0),
-            (0,1,0,1),(0,0,1,1),(1,1,1,0),(1,1,0,1),
-            (1,0,1,1),(0,1,1,1),(1,1,1,1)]
+    winner_line = []
+    dirs = []
+    # alle 4D-Richtungen generieren (jede Kombination aus -1,0,1)
+    for dw in (-1, 0, 1):
+        for dz in (-1, 0, 1):
+            for dy in (-1, 0, 1):
+                for dx in (-1, 0, 1):
+                    if (dw, dz, dy, dx) == (0, 0, 0, 0):
+                        continue
+                    # nur eine Richtung pro Linie (nicht doppelt)
+                    if (dw, dz, dy, dx) > (0, 0, 0, 0):
+                        dirs.append((dw, dz, dy, dx))
+
     for w in range(DIM):
         for z in range(DIM):
             for y in range(DIM):
                 for x in range(DIM):
                     p = game_board[w][z][y][x]
-                    if not p: continue
+                    if not p:
+                        continue
                     for dw, dz, dy, dx in dirs:
                         line = []
                         try:
                             for i in range(4):
-                                if game_board[w+i*dw][z+i*dz][y+i*dy][x+i*dx] == p:
-                                    line.append((w+i*dw,z+i*dz,y+i*dy,x+i*dx))
-                                else: break
-                            if len(line)==4:
-                                winner_line=line; return p
-                        except IndexError: continue
-    if all(game_board[w][z][y][x] for w in range(DIM) for z in range(DIM) for y in range(DIM) for x in range(DIM)):
+                                ww = w + i * dw
+                                zz = z + i * dz
+                                yy = y + i * dy
+                                xx = x + i * dx
+                                if ww < 0 or zz < 0 or yy < 0 or xx < 0:
+                                    raise IndexError
+                                if game_board[ww][zz][yy][xx] == p:
+                                    line.append((ww, zz, yy, xx))
+                                else:
+                                    break
+                            if len(line) == 4:
+                                winner_line = line
+                                return p
+                        except IndexError:
+                            continue
+
+    if all(game_board[w][z][y][x]
+           for w in range(DIM)
+           for z in range(DIM)
+           for y in range(DIM)
+           for x in range(DIM)):
         return "Tie"
     return None
 
