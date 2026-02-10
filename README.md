@@ -1,6 +1,6 @@
 # FourTic Game
 
-FourTic is a 4D Connect Four game implemented using Pygame. Players take turns placing their markers in a 4D grid, aiming to connect four of their markers in a row, column, or diagonal across any of the four dimensions.
+FourTic is a 4D Connect Four/Tic-Tac-Toe game implemented using Pygame. In principle it is a Tic-Tac-Toe game but to connect four in a row instead of three. Players take turns placing their markers in a 4D grid, aiming to connect four of their markers in a row, column, or diagonal across any of the four dimensions.
 
 Try directly online:
 https://grafmar.github.io/FourTic/src/build/web/
